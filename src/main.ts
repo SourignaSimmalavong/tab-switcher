@@ -33,8 +33,9 @@ export default class CycleThroughPanes extends Plugin {
             let correctPane = false;
             if (isMainWindow) {
                 if (this.settings.stayInSplit) {
+                    // Dirty trick to get the direct parent (and not the whole root workspace that contains all the splits).
                     correctPane =
-                        sameWindow && leaf.getRoot() == activeLeaf.getRoot();
+                        sameWindow && (leaf as any).parent == (activeLeaf as any).parent;
                 } else {
                     correctPane =
                         sameWindow &&
@@ -69,12 +70,15 @@ export default class CycleThroughPanes extends Plugin {
                         const leaves: WorkspaceLeaf[] = this.getLeavesOfTypes(
                             this.settings.viewTypes
                         );
+                        this.leaves = leaves;
                         const index = leaves.indexOf(active);
 
                         if (index === leaves.length - 1) {
                             this.queueFocusLeaf(leaves[0]);
+                            this.leafIndex = 0;
                         } else {
                             this.queueFocusLeaf(leaves[index + 1]);
+                            this.leafIndex = index + 1;
                         }
                     }
                     return true;
@@ -93,13 +97,16 @@ export default class CycleThroughPanes extends Plugin {
                         const leaves: WorkspaceLeaf[] = this.getLeavesOfTypes(
                             this.settings.viewTypes
                         );
+                        this.leaves = leaves;
                         const index = leaves.indexOf(active);
 
                         if (index !== undefined) {
                             if (index === 0) {
                                 this.queueFocusLeaf(leaves[leaves.length - 1]);
+                                this.leafIndex = leaves.length - 1;
                             } else {
                                 this.queueFocusLeaf(leaves[index - 1]);
+                                this.leafIndex = index - 1;
                             }
                         }
                     }

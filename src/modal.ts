@@ -15,7 +15,7 @@ export class GeneralModal extends SuggestModal<string> {
         this.dimBackground = false;
         super.open();
 
-        this.chooser.setSelectedItem(1);
+        this.chooser.setSelectedItem(this.plugin.leafIndex);
         this.focusTab();
 
         this.containerEl
@@ -56,5 +56,6 @@ export class GeneralModal extends SuggestModal<string> {
 
     focusTab(): void {
         this.plugin.queueFocusLeaf(this.leaves[this.chooser.selectedItem]);
+        this.plugin.leafIndex = this.chooser.selectedItem;
     }
 }

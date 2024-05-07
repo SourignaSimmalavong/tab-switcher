@@ -201,6 +201,7 @@ export default class CycleThroughPanes extends Plugin {
 
                 if (leaf) {
                     this.queueFocusLeaf(leaf);
+                    this.leafIndex = 1;
                 }
             },
         });
@@ -216,6 +217,7 @@ export default class CycleThroughPanes extends Plugin {
 
                 if (leaf) {
                     this.queueFocusLeaf(leaf);
+                    this.leafIndex = 1;
                 }
             },
         });
